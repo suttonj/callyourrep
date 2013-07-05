@@ -1,0 +1,8 @@
+{
+  "name": "callyourrep-api",
+  "description": "API for CallYourRep app",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "~3.3.3"
+  }
+}
