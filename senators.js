@@ -16,12 +16,26 @@ exports.getSenators = function( stateCode, callback ) {
 	}, function(err, response, body) {
  		//console.log(body);
 		var $ = cheerio.load(body);
+		var phone, name, party, state;
+		var returnVal = { "senators": [] };
+
 		senators = $('rep');
 		senators.each(function(index, sen) {
-			console.log($(sen).attr('name'));
+			name = $(sen).attr('name');
+			phone = $(sen).attr('phone');
+			state = $(sen).attr('state');
+			party = $(sen).attr('party');
+			returnVal.senators.push({
+				"name" : name,
+				"phone" : phone,
+				"state" : state,
+				"party" : party
+			});
+
+			console.log(name + ' (' + party + ') - ' + state + ' : ' + phone);
 		});
 
-		callback( body );
+		callback( returnVal );
 		return( this );
 	});
 }

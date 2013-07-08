@@ -2,8 +2,7 @@ var express = require('express');
 var app = express();
 
 var states = [ 'ma' ];
-var senators = require('./senators.js');
-var parseXml = require('xml2js').parseString;
+var senatorSearch = require('./senators.js');
 
 app.get('/senators/:state', function(req, res) {
 	if (req.params.state != 'ma') {
@@ -11,8 +10,11 @@ app.get('/senators/:state', function(req, res) {
 		return res.send('Error 404: State not found');
 	}
 
-	senators.getSenators(req.params.state, function(cgmlist) {
-		res.write(cgmlist);
+	senatorSearch.getSenators(req.params.state, function(senators) {
+		// for (var i = 0; i < senators.length; i++) {
+		// 	res.write(senators[i].name);
+		// };
+		res.send(senators);
 		res.end();
 		
 	});
