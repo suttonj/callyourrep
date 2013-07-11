@@ -1,9 +1,9 @@
 var request = require('request');
 var cheerio = require('cheerio');
-var senators = {};
 
-exports.getSenators = function( stateCode, callback ) {
+exports.getCongressmen = function( stateCode, callback ) {
 	callback = (callback || function(){});
+	var returnVal = { senators: [], reps: [] };
 
 	request({
 		uri: "http://whoismyrepresentative.com/getall_sens_bystate.php",
@@ -17,7 +17,6 @@ exports.getSenators = function( stateCode, callback ) {
  		//console.log(body);
 		var $ = cheerio.load(body);
 		var phone, name, party, state;
-		var returnVal = { "senators": [] };
 
 		senators = $('rep');
 		senators.each(function(index, sen) {
@@ -35,7 +34,39 @@ exports.getSenators = function( stateCode, callback ) {
 			console.log(name + ' (' + party + ') - ' + state + ' : ' + phone);
 		});
 
-		callback( returnVal );
-		return( this );
+		request({
+			uri: "http://whoismyrepresentative.com/getall_reps_bystate.php",
+			method: "GET",
+			qs: {
+				state: stateCode
+			},
+			timeout: 10000,
+			followRedirect: false
+		}, function(err, response, body) {
+	 		//console.log(body);
+			var $ = cheerio.load(body);
+			var phone, name, party, state;
+
+			reps = $('rep');
+			reps.each(function(index, rep) {
+				name = $(rep).attr('name');
+				phone = $(rep).attr('phone');
+				state = $(rep).attr('state');
+				party = $(rep).attr('party');
+				returnVal.reps.push({
+					"name" : name,
+					"phone" : phone,
+					"state" : state,
+					"party" : party
+				});
+
+				console.log(name + ' (' + party + ') - ' + state + ' : ' + phone);
+					
+			});
+
+			callback( returnVal );
+			return( this );
+		});
 	});
-}
+};
+
