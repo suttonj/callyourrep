@@ -2,19 +2,19 @@ var express = require('express');
 var app = express();
 
 var states = [ 'ma' ];
-var cgmSearch = require('./senators.js');
+var cgmSearch = require('./members.js');
 
-app.get('/senators/:state', function(req, res) {
+app.get('/members/:state', function(req, res) {
 	// if (req.params.state != 'ma') {
 	// 	res.statusCode = 404;
 	// 	return res.send('Error 404: State not found');
 	// }
 
-	cgmSearch.getCongressmen(req.params.state, function(cgmList) {
-		// for (var i = 0; i < senators.length; i++) {
-		// 	res.write(senators[i].name);
+	cgmSearch.getCongressmen(req.params.state, function(members) {
+		// for (var i = 0; i < members.length; i++) {
+		// 	res.write(members[i].name);
 		// };
-		res.send(cgmList);
+		res.send(members);
 		res.end();
 		return;
 	});
