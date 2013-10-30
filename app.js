@@ -20,4 +20,13 @@ app.get('/members/:state', function(req, res) {
 	});
 });
 
+app.get('/portraits', function(req, res) {
+
+	cgmSearch.getSenatePortraits(function(portraits) {
+		res.send(portraits);
+		res.end();
+		return;
+	});
+});
+
 app.listen(process.env.PORT || 8080);
