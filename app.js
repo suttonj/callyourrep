@@ -20,9 +20,9 @@ app.get('/members/:state', function(req, res) {
 	});
 });
 
-app.get('/portraits', function(req, res) {
+app.get('/portraits/:state', function(req, res) {
 
-	cgmSearch.getSenatePortraits(function(portraits) {
+	cgmSearch.getSenatePortraits(req.params.state, function(portraits) {
 		res.send(portraits);
 		res.end();
 		return;

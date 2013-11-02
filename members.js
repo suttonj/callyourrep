@@ -66,13 +66,16 @@ exports.getCongressmen = function( stateCode, callback ) {
 	});
 };
 
-exports.getSenatePortraits = function( callback ) {
+exports.getSenatePortraits = function( stateCode, callback ) {
 	callback = (callback || function(){});
 	var portraits = [];
 
 	request({
 		uri: "http://en.wikipedia.org/wiki/List_of_current_United_States_Senators",
 		method: "GET",
+		qs: {
+			state: stateCode
+		},
 		timeout: 10000,
 		followRedirect: true
 	}, function(err, response, body) {
